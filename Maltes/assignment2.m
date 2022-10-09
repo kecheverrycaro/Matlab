@@ -67,29 +67,29 @@ fp_soft = ceil(tf_s*f_soft);
 fp_hard = ceil(tf_s*f_hard);
 sp_lim = ceil(s_lim/s_s);
 
-% perform FFT on dataset and multiply with sampling time
+% transform to frequency-space domain and multiply with sampling time
 data_freq = fft(data_refl,[], 1)*t_s;
 
 % filter frequency band with bandpass filter
 data_freq = data_freq(fp_bp(1):fp_bp(2),:);
 
-% filter data by soft and hard filter frequency with udf
+% filter data by soft and hard filter frequency and space limit with udf
 data_filter_1 = apply_filter(data_freq, 'bri', fp_soft, fp_hard, sp_lim);
 data_filter_2 = apply_filter(data_freq, 'lin', fp_soft, fp_hard, sp_lim);
 data_filter_3 = apply_filter(data_freq, 'sin', fp_soft, fp_hard, sp_lim);
 
-% perform IFFT on dataset and multiply with number frequencies,
-% time frequency sampling and 2 to restore amplitudes
-data_time_1 = real(ifft(data_filter_1,[],1))*n_samples*2*tf_s;
-data_time_2 = real(ifft(data_filter_2,[],1))*n_samples*2*tf_s;
-data_time_3 = real(ifft(data_filter_3,[],1))*n_samples*2*tf_s;
+% transform to time-space domain and multiply with number of frequencies,
+% time frequency sampling and 2
+data_time_1 = real(ifft(data_filter_1,[],1))*(1+f_bp(2)-f_bp(1))*2*tf_s;
+data_time_2 = real(ifft(data_filter_2,[],1))*(1+f_bp(2)-f_bp(1))*2*tf_s;
+data_time_3 = real(ifft(data_filter_3,[],1))*(1+f_bp(2)-f_bp(1))*2*tf_s;
 
 % transform to frequency-wavenumber domain, shift and multiply with
 % sampling space
-data_wave_1 = fftshift(fft(data_freq(:,1:1:end),[],2),2)*(s_s);
-data_wave_2 = fftshift(fft(data_freq(:,2:1:end),[],2),2)*(s_s);
-data_wave_4 = fftshift(fft(data_freq(:,4:1:end),[],2),2)*(s_s);
-data_wave_8 = fftshift(fft(data_freq(:,8:1:end),[],2),2)*(s_s);
+data_wave_1 = fftshift(fft(data_freq(:,1:1:end),[],2),2)*s_s;
+data_wave_2 = fftshift(fft(data_freq(:,1:2:end),[],2),2)*s_s;
+data_wave_4 = fftshift(fft(data_freq(:,1:4:end),[],2),2)*s_s;
+data_wave_8 = fftshift(fft(data_freq(:,1:8:end),[],2),2)*s_s;
 
 
 %% VISUALIZATIONS
@@ -197,4 +197,4 @@ disp('The Sinusoidal filter gives the best results.');
 disp(' ');
 disp('Question 5: What happens to the main energy?');
 disp('The main energy drags around the plot and comes in from');
-disp('the other side. This is an effect of alisasing');
+disp('the other side. This is an effect of alisasing.');

@@ -1,7 +1,7 @@
-function plotcreator(data,cmap, xlab, ylab, ti, xvalue)
+function plotcreatorb(data,cmap, xlab, ylab, ti, xvalue,yvalue)
 % plotcreator plots imagesc with specified colormap, x-label, y-label and title.
  
-imagesc(data,'xData',xvalue);    % plots data
+imagesc(data,'xData',xvalue,'yData',yvalue);    % plots data
 set(gca,'linewidth',2); % sets linewidth
 colormap(cmap);         % set colormap to parameter
 colorbar;               % plot colorbar
