@@ -128,11 +128,11 @@ freqtowave_lcfs=fftshift(fft(fftdata1f_lcfs(:,1:1:end),[],2),2)*ds;
 %% Frequency-Wavenumber Domain every knd Trace
 %Sinusoidal Filter
 %k=2
-data_wave_2 = fftshift(fft(fftdata1f_lcfs(:,1:2:end),[],2),2)*ds;
+data_wave_2 = fftshift(fft(fftdata1f(:,1:2:end),[],2),2)*ds;
 %k=4
-data_wave_4 = fftshift(fft(fftdata1f_lcfs(:,1:4:end),[],2),2)*ds;
+data_wave_4 = fftshift(fft(fftdata1f(:,1:4:end),[],2),2)*ds;
 %k=8
-data_wave_8 = fftshift(fft(fftdata1f_lcfs(:,1:8:end),[],2),2)*ds;
+data_wave_8 = fftshift(fft(fftdata1f(:,1:8:end),[],2),2)*ds;
 %% Bin File Visualization
 figure();
 plotcreator(data_refl,'gray','Horizontal Displacement [m]','Two-Way Travel Time  [ms]','Common Source-Gather',xd)
